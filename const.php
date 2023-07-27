@@ -12,15 +12,15 @@ class SocialLogin{
     // public static $naverClientSecret = "RN5GUhrOLf";
     //개발자용
     //* api 키
-    private static $kakaoApi = "542c602bd42c2ac9f72621ec88a9a999";
+    private static $kakaoApi = "8a7a8f9d7e4faec80c50b57a67892ff9";
     // private static $googleApi = "614145022281-df5e10i0gmg682i1o3m2bc32uqg8mo9e.apps.googleusercontent.com";
     private static $googleApi = "799130739262-atd24g7sef1m1cjnlqnm5ja2juuo0p1l.apps.googleusercontent.com";
-    private static $naverApi = "UVhkjEdAlU4kaJk3QZMg";
+    private static $naverApi = "YvwSKlMW1pclan7r5DEa";
     //* 시크릿 키
     // private static $googleClientSecret = "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";
 
     private static $googleClientSecret = "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";
-    private static $naverClientSecret = "jIzRnLdH2u";
+    private static $naverClientSecret = "IJA7H79RzA";
     //* 접속 url
     
     private static $redirectUrl = "http://localhost/cms/social_login.php";
