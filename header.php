@@ -1,4 +1,5 @@
 ﻿<?php
+    include "config/const.php";
     // 로그인 정보가 없다면 session_start();
     if (empty($_SESSION["userid"])) session_start();
     if (isset($_SESSION["userid"])) $userid = $_SESSION["userid"];

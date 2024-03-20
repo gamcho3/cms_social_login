@@ -7,6 +7,8 @@
                 <ul>
 <!-- 최근 게시 글 DB에서 불러오기 -->
 <?php
+
+
     // 닷홈의 데이터베이스 아이디, 데이터베이스 패스워드, 데이터베이스명
     $con = mysqli_connect("localhost", "sunnylee", "lsh0916!", "sunnylee");
     $sql = "select * from board order by num desc limit 5";
