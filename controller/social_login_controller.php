@@ -50,40 +50,40 @@ class SocialLoginController{
     
     
         try {
-     //php에서 제공하는 데이터 전송툴(CURL)
-     // curl 초기화
-     $ch = curl_init();
-    
-     //전송할 데이터 객체화
-     $body_data = array(
-         "code"=>$this->code,
-         "client_id" => $restApiKey,
-         "client_secret" =>$client_secret,
-         "redirect_uri"=>$callbackUrl,
-         "grant_type" =>"authorization_code"
-     );
-     $body = json_encode($body_data);
-     
-    
-     
-     //url 지정
-     curl_setopt($ch,CURLOPT_URL,$returnUrl);
-     //post로 전송
-     curl_setopt($ch,CURLOPT_POST,true); 
-     // 전송할 body값 입력
-     curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
-     //문자열로 변환
-     curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
-    
-     //curl 실행
-     $response = curl_exec($ch);
-    // CommonMethod::alert($response);
-     //응답받은 json 디코딩
-     $data = json_decode($response,true);
-    
-     //tokenModel 인스턴스 생성
-     $tokenModel = new TokenModel($data);
-     $this->tokenModel = $tokenModel;
+        //php에서 제공하는 데이터 전송툴(CURL)
+        // curl 초기화
+        $ch = curl_init();
+        
+        //전송할 데이터 객체화
+        $body_data = array(
+            "code"=>$this->code,
+            "client_id" => $restApiKey,
+            "client_secret" =>$client_secret,
+            "redirect_uri"=>$callbackUrl,
+            "grant_type" =>"authorization_code"
+        );
+        $body = json_encode($body_data);
+        
+        
+        
+        //url 지정
+        curl_setopt($ch,CURLOPT_URL,$returnUrl);
+        //post로 전송
+        curl_setopt($ch,CURLOPT_POST,true); 
+        // 전송할 body값 입력
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+        //문자열로 변환
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+        
+        //curl 실행
+        $response = curl_exec($ch);
+        // CommonMethod::alert($response);
+        //응답받은 json 디코딩
+        $data = json_decode($response,true);
+        
+        //tokenModel 인스턴스 생성
+        $tokenModel = new TokenModel($data);
+        $this->tokenModel = $tokenModel;
            
         }catch(Exception $e){
             echo $e->getMessage();
@@ -141,16 +141,27 @@ class SocialLoginController{
     }
 
     function login(){
-
+        // email값을 이용하여 user데이터 가져오기
         $data = $this->socialLoginRepository->findUserByEmail($this->profileModel->email);
 
         // 유저가 존재하지 않을떄
         if($data == null){
+            // 요청한 계정정보로 회원가입
             $this->socialLoginRepository->signup($this->profileModel,$this->state);
-        }
 
-        // 이메일 중복가입을 방지하기 위해
-        // 어떤 플랫폼에서 회원가입 됐는지 확인
+            // 세션에 데이터 저장
+            // 로그인 유지
+            session_start();
+            $_SESSION["userid"] = $this->profileModel->email;
+            $_SESSION["username"] = $this->profileModel->nickname;
+            $_SESSION["id"] = $this->profileModel->uid;
+            $_SESSION["accessToken"] = $this->tokenModel->getAccessToken();
+            $_SESSION["state"] = $this->state;
+            header("Location: http://" . $_SERVER['HTTP_HOST']. '/cms/index.php');
+            exit();
+        }
+        // 로그인한 플랫폼과 존재하는 유저의 플랫폼이 다르다면
+        // 어떤 플랫폼에서 회원가입 됐는지 확인후 alert창 열기
         else if($data['login_div'] != $this->state){
             $divValue = array(
                 "kakao"=>"카카오",
@@ -162,13 +173,15 @@ class SocialLoginController{
               echo("
               <script>
                 alert('가입된 이메일이 존재합니다. (".$divValue[$data['login_div']].")');
+                location.href='index.php';
               </script>
             ");
-            header("Location: http://" . $_SERVER['HTTP_HOST']. '/cms/index.php');
             exit();
          }
-
-         session_start();
+         // 플랫폼이 일치한다면
+         // 정상적으로 로그인 실행
+         else{
+            session_start();
             $_SESSION["userid"] = $this->profileModel->email;
             $_SESSION["username"] = $this->profileModel->nickname;
             $_SESSION["id"] = $this->profileModel->uid;
@@ -176,12 +189,9 @@ class SocialLoginController{
             $_SESSION["state"] = $this->state;
             header("Location: http://" . $_SERVER['HTTP_HOST']. '/cms/index.php');
             exit();
+         }
          
     }
-
-
-    
-//카카오 토큰 만료 로그아웃
 
     
 }

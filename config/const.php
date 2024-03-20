@@ -9,12 +9,19 @@
 // public static $naverApi = "jRZjhTl5lxJS3TRWJqZ5";
 // public static $naverClientSecret = "RN5GUhrOLf";
 
+// composer 패키지 불러오기
+require_once 'vendor/autoload.php';
+
+//.env파일이 있는 경로를 설정
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__.'/../');
+$dotenv->load();
+
 // PHP 상수 설정
 // 각 플랫폼의 api키, secret키 설정
 define("KAKAO_API", "ba78b79d7214da5171513638492211ed");
-define("GOOGLE_API", getenv('GOOGLE_API'));
+define("GOOGLE_API", $_ENV['GOOGLE_API']);
 define("NAVER_API","YvwSKlMW1pclan7r5DEa");
-define("GOOGLE_CLIENT_SECRET",getenv('GOOGLE_CLIENT_SECRET'));
+define("GOOGLE_CLIENT_SECRET",$_ENV['GOOGLE_CLIENT_SECRET']);
 define("NAVER_CLIENT_SECRET","IJA7H79RzA");
 
 // 네트워크 정보 저장
