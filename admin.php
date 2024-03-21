@@ -67,6 +67,7 @@
 		</h3>
 	    <ul id="board_list">
 		<li class="title">
+			
 			<span class="col1">선택</span>
 			<span class="col2">번호</span>
 			<span class="col3">이름</span>

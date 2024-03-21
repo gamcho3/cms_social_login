@@ -1,6 +1,4 @@
-<?php
-include "const.php";
-?>
+
 
 <!DOCTYPE html>
 <html>
