@@ -19,4 +19,4 @@ jobs:
 
     - name: Upload files via SFTP
       run: |
-        lftp -u ${{ secrets.SFTP_USER }},${{ secrets.SFTP_PASSWORD }} -e "set ftp:ssl-allow no; mirror -R ./local_directory /remote_directory; bye" sftp://${{ secrets.SFTP_HOST }}:${{ secrets.SFTP_PORT }}
+        lftp -u ${{ secrets.SFTP_USER }},${{ secrets.SFTP_PASSWORD }} -e "set ftp:ssl-allow no; mirror -R ./ /html; bye" sftp://${{ secrets.SFTP_HOST }}:${{ secrets.SFTP_PORT }}
