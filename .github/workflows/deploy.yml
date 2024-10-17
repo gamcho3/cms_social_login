@@ -17,6 +17,6 @@ jobs:
     - name: Install lftp
       run: sudo apt-get install -y lftp
 
-    - name: Upload files via SFTP
+    - name: Upload files via FTP
       run: |
-        lftp -u ${{ secrets.SFTP_USER }},${{ secrets.SFTP_PASSWORD }} -e "set ftp:ssl-allow no; mirror -R ./ /html; bye" sftp://${{ secrets.SFTP_HOST }}:${{ secrets.SFTP_PORT }}
+        lftp -u ${{ secrets.SFTP_USER }},${{ secrets.SFTP_PASSWORD }} -e "set ftp:ssl-allow no; mirror -R ./ /html/cms; bye" ftp://${{ secrets.SFTP_HOST }}:${{ secrets.SFTP_PORT }}
