@@ -5,3 +5,18 @@ on:
   push:
     branches:
       - main
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Install lftp
+      run: sudo apt-get install -y lftp
+
+    - name: Upload files via SFTP
+      run: |
+        lftp -u ${{ secrets.SFTP_USER }},${{ secrets.SFTP_PASSWORD }} -e "set ftp:ssl-allow no; mirror -R ./local_directory /remote_directory; bye" sftp://${{ secrets.SFTP_HOST }}:${{ secrets.SFTP_PORT }}
