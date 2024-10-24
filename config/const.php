@@ -10,11 +10,11 @@
 // public static $naverClientSecret = "RN5GUhrOLf";
 
 // composer 패키지 불러오기
-require_once 'vendor/autoload.php';
+
 
 //.env파일이 있는 경로를 설정
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__.'/../');
-$dotenv->load();
+// $dotenv = Dotenv\Dotenv::createImmutable(__DIR__.'/../');
+// $dotenv->load();
 
 // PHP 상수 설정
 // 각 플랫폼의 api키, secret키 설정
