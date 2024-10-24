@@ -32,7 +32,7 @@ class NetworkInfo{
     const DB = "sunnylee";
 }
 
-// 테스트
+
 // 
 class SocialLogin{
     //프로퍼티   
