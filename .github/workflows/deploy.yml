@@ -1,22 +1,31 @@
+# 워크플로우 이름
 name: sftp-deploy
-
+# 트리거 이벤트 생성하기
 on:
+  # 이벤트를 수동으로 실행
   workflow_dispatch:
+  # dev 브랜치에 push가 발생했을 경우 이벤트 발생
   push:
     branches:
       - dev
 
+# 워크플로우가 수행할 작업
 jobs:
+  # 작업의 이름
   upload:
+    # 작업을 실행할 환경 (리눅스 우분투)
     runs-on: ubuntu-latest
-
+    # 실행 단계
     steps:
     - name: Checkout repository
+      # 깃허브에서 실행한 환경으로 코드 내려받기
       uses: actions/checkout@v3
 
     - name: Install lftp
+      # ftp업로드에 필요한 프로그램 설치
       run: sudo apt-get install -y lftp
 
     - name: Upload files via FTP
+      # ftp업로드를 위한 명령어
       run: |
         lftp -u ${{ secrets.SFTP_USER }},${{ secrets.SFTP_PASSWORD }} -e "set ftp:ssl-allow no; mirror -R ./ /html/cms; bye" ftp://${{ secrets.SFTP_HOST }}:${{ secrets.SFTP_PORT }}
