@@ -29,19 +29,16 @@ jobs:
       # ftp업로드를 위한 명령어
       run: |
         lftp -u ${{ secrets.SFTP_USER }},${{ secrets.SFTP_PASSWORD }} -e "set ftp:ssl-allow no; mirror -R ./ /html/cms; bye" ftp://${{ secrets.SFTP_HOST }}:${{ secrets.SFTP_PORT }}
-  
-  notify:
-    runs-on: ubuntu-latest
+    - name: Send Slack notification
+      uses: slackapi/slack-github-action@v1.24.0
+      with:
+        payload: |
+          {
+            "text": "✅ Build succeeded!"
+          }
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.WEB_HOOK }}
 
-    steps:
-      - name: Send Slack notification
-        uses: slackapi/slack-github-action@v1.24.0
-        with:
-          payload: |
-            {
-              "text": "✅ Build succeeded!"
-            }
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.WEB_HOOK }}
+    
     
         
